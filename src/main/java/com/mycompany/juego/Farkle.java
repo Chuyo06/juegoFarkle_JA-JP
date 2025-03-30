@@ -4,11 +4,26 @@
  */
 package com.mycompany.juego;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jalex
  */
 public class Farkle {
     
+    private ArrayList<Jugador> jugadores ;
+    private int puntosMaximo ;
+
+    public Farkle() {
+        
+       
+    }
+    
+    
+    public void iniciarJuego()
+    {
+         Tablero ventanaJuego = new Tablero();
+    }
     
 }

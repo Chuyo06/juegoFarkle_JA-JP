@@ -4,10 +4,23 @@
  */
 package com.mycompany.juego;
 
+import java.util.Random;
+
 /**
  *
  * @author jalex
  */
 public class Dado {
+    
+    private Random random = new Random(); 
+
+    public Dado() {
+    }
+    
+    //Metodo que regresa un valor entre 1 - 6.
+    public int lanzar()
+    {
+        return random.nextInt(6) + 1 ;
+    }
     
 }
