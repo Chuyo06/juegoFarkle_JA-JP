@@ -27,5 +27,16 @@ public class Jugador {
         this.nombre = nombre;
     }
     
+    public int getPuntos() {
+        return puntajeTotal;
+    }
+
+    public void agregarPuntos(int puntos) {
+        puntajeTotal += puntos;
+    }
+
+    public void reiniciarPuntos() {
+        puntajeTotal = 0;
+    }
     
 }

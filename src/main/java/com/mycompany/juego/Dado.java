@@ -13,14 +13,20 @@ import java.util.Random;
 public class Dado {
     
     private Random random = new Random(); 
-
+    private int valor ;
+    
+    
     public Dado() {
     }
     
-    //Metodo que regresa un valor entre 1 - 6.
-    public int lanzar()
+    //Metodo que te da  un valor entre 1 - 6.
+    public void lanzar()
     {
-        return random.nextInt(6) + 1 ;
+         valor = random.nextInt(6) + 1 ;
     }
     
+    public int getValor()
+    {
+        return valor ;
+    }
 }

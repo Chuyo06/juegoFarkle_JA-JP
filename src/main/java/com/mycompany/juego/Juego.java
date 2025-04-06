@@ -12,7 +12,9 @@ public class Juego {
 
     public static void main(String[] args) {
         
-        Farkle juego = new Farkle();
-        juego.iniciarJuego();
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            new VentanaInicio();
+        });
     }
-}
+    }
+
