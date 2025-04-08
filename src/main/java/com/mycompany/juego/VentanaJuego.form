@@ -169,6 +169,9 @@
           <Dimension value="[70, 70]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clickDado2"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="dado3">
       <Properties>
@@ -180,6 +183,9 @@
           <Dimension value="[70, 70]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clickDado3"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="dado4">
       <Properties>
@@ -191,6 +197,9 @@
           <Dimension value="[70, 70]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clickDado4"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="dado5">
       <Properties>
@@ -202,6 +211,9 @@
           <Dimension value="[70, 70]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clickDado5"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="dado6">
       <Properties>
@@ -213,6 +225,9 @@
           <Dimension value="[70, 70]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clickDado6"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>

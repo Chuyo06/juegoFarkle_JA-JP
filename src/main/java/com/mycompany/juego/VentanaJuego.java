@@ -5,6 +5,7 @@
 package com.mycompany.juego;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,16 @@ public class VentanaJuego extends javax.swing.JFrame {
 
     private Farkle juego;
     private VentanaInicio ventanaInicio ;
-    private List<Integer> valoresDadosSeleccionados = new ArrayList<>(); //Aqui se guardan los valores de los dados que se seleccionaron.
-    //Constructor recibe la 
+    private boolean[] dadosSeleccionados = new boolean[6]; //Para concer cual dado se esta seleccionando 
+
+    //private List<Integer> valoresDadosSeleccionados = new ArrayList<>(); //Aqui se guardan los valores de los dados que se seleccionaron.
+   
+    //Constructor que recibe la ventana de Inicio para que siga de esa
     public VentanaJuego(VentanaInicio ventanaInicio) {
         initComponents();
   
          this.ventanaInicio = ventanaInicio;  // Asignar la instancia recibida
-         getContentPane().setBackground(new Color(237, 255, 250)); // color de fondo
+         getContentPane().setBackground(new Color(232, 248, 245)); // color de fondo
         juego = new Farkle(ventanaInicio.getJugadores());
         
         redimensionarImgPuntos();
@@ -53,6 +57,8 @@ public class VentanaJuego extends javax.swing.JFrame {
     List<Integer> valores = juego.getValoresDados(); //Un vector con los valores de los dados que salieron
     JLabel[] dadosLabels = {dado1, dado2, dado3, dado4, dado5, dado6}; //Vector de los JLabels de los dados
     
+    int tamanoImagen = 70;//tamanio de la imagen del dado mas pequenia que el dado
+    
     //Ciclo for que realiza los cambios en las imagene dependiendo el valor que toco con el metodo
     for (int i = 0; i < valores.size(); i++) {
         int valor = valores.get(i);//Se guarda en la varibale valor el numero que toco en el dado correspondiente.
@@ -61,7 +67,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         
        //Utilizando el tamanio del JLabel apra poner la imagen
         Image imagenEscalada = icono.getImage()
-            .getScaledInstance(dadosLabels[i].getWidth(), dadosLabels[i].getHeight(), Image.SCALE_SMOOTH);
+            .getScaledInstance(tamanoImagen, tamanoImagen, Image.SCALE_SMOOTH);
         
         dadosLabels[i].setIcon(new ImageIcon(imagenEscalada)); //Dependiendo el valor en el que vaya i, se pondra la imagen respectiva.
     }
@@ -69,45 +75,48 @@ public class VentanaJuego extends javax.swing.JFrame {
   
   private void redimensionarImgDados()
   {
-          ImageIcon dado1Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado1.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada1 = dado1Icon.getImage().getScaledInstance(
-          dado1.getWidth(), dado1.getHeight(), Image.SCALE_SMOOTH);
-          dado1.setIcon(new ImageIcon(imagenEscalada1));
-
-          ImageIcon dado2Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado2.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada2 = dado2Icon.getImage().getScaledInstance(
-          dado2.getWidth(), dado2.getHeight(), Image.SCALE_SMOOTH);
-          dado2.setIcon(new ImageIcon(imagenEscalada2));
-          
-          ImageIcon dado3Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado3.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada3 = dado3Icon.getImage().getScaledInstance(
-          dado3.getWidth(), dado3.getHeight(), Image.SCALE_SMOOTH);
-          dado3.setIcon(new ImageIcon(imagenEscalada3));
-          
-          ImageIcon dado4Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado4.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada4 = dado4Icon.getImage().getScaledInstance(
-          dado4.getWidth(), dado4.getHeight(), Image.SCALE_SMOOTH);
-          dado4.setIcon(new ImageIcon(imagenEscalada4));
-          
-          ImageIcon dado5Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado5.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada5 = dado4Icon.getImage().getScaledInstance(
-          dado5.getWidth(), dado5.getHeight(), Image.SCALE_SMOOTH);
-          dado5.setIcon(new ImageIcon(imagenEscalada5));
-          
-          ImageIcon dado6Icon = new ImageIcon(getClass().getResource("/logo/signo.png"));
-          dado6.setSize(70, 70); //  tamaño que quieras
-          Image imagenEscalada6 = dado6Icon.getImage().getScaledInstance(
-          dado6.getWidth(), dado6.getHeight(), Image.SCALE_SMOOTH);
-          dado6.setIcon(new ImageIcon(imagenEscalada6));
-          
-
+      int tamanioLabel = 90;
+      int tamanioImg = 70;
+      
+     JLabel[] dadosLabels = {dado1 , dado2 , dado3 , dado4 , dado5 , dado6};
+     
+     
+     for(JLabel dadoLabel : dadosLabels)
+     {
+          dadoLabel.setText(null);//Eliminar el nombre del Label
+         dadoLabel.setSize(tamanioLabel , tamanioLabel);//Tamanio que queremos en el Label
+         dadoLabel.setPreferredSize(new Dimension(tamanioLabel , tamanioLabel));//Tamanio preferido del Label que es el mismo
+         
+            // Cargar y escala en el tamanio que dijimos la imagen del signo
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/logo/signo.png"));
+        Image imagenEscalada = originalIcon.getImage().getScaledInstance(
+            tamanioImg, tamanioImg, Image.SCALE_SMOOTH);
+        
+        // Centrar la imagen en el JLabel 
+        dadoLabel.setHorizontalAlignment(JLabel.CENTER);
+        dadoLabel.setVerticalAlignment(JLabel.CENTER);
+        //
+        //Poner la imagen en el Label
+        dadoLabel.setIcon(new ImageIcon(imagenEscalada));
+     }
   }
   
+  //Metodo que va ayudarnos a identificar que dado esta seleccionado
+  private void seleccionarDado(int numDado , JLabel dadoLabel )
+  {
+      
+      // con esta comparacion cambias el estado de la seleccion
+        dadosSeleccionados[numDado] = !dadosSeleccionados[numDado];
+      
+      if (dadosSeleccionados[numDado])
+      {
+          dadoLabel.setBorder(javax.swing.BorderFactory.createLineBorder(Color.RED, 4));//Borde cuando se selecciona
+      }
+      else
+      {
+          dadoLabel.setBorder(null);//Se quita el borde cuando no se utiliza
+      }
+  }
   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -142,22 +151,47 @@ public class VentanaJuego extends javax.swing.JFrame {
         dado2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dados/dice_2.png"))); // NOI18N
         dado2.setText("jLabel2");
         dado2.setPreferredSize(new java.awt.Dimension(70, 70));
+        dado2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDado2(evt);
+            }
+        });
 
         dado3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dados/dice_3.png"))); // NOI18N
         dado3.setText("jLabel3");
         dado3.setPreferredSize(new java.awt.Dimension(70, 70));
+        dado3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDado3(evt);
+            }
+        });
 
         dado4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dados/dice_4.png"))); // NOI18N
         dado4.setText("jLabel4");
         dado4.setPreferredSize(new java.awt.Dimension(70, 70));
+        dado4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDado4(evt);
+            }
+        });
 
         dado5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dados/dice_5.png"))); // NOI18N
         dado5.setText("jLabel5");
         dado5.setPreferredSize(new java.awt.Dimension(70, 70));
+        dado5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDado5(evt);
+            }
+        });
 
         dado6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dados/dice_6.png"))); // NOI18N
         dado6.setText("jLabel6");
         dado6.setPreferredSize(new java.awt.Dimension(70, 70));
+        dado6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDado6(evt);
+            }
+        });
 
         jLabel7.setText("jLabel7");
 
@@ -278,8 +312,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clickDado1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado1
-        
-        
+       seleccionarDado(0 , dado1);
     }//GEN-LAST:event_clickDado1
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -287,6 +320,25 @@ public class VentanaJuego extends javax.swing.JFrame {
         juego.lanzarDados();//Se lanzan los dados y en el metodo lanzarDados() se guardan los valores.
         actualizarImagenesDados(); //Aqui las imagenes cambian cuando se presiona el boton
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void clickDado2(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado2
+        seleccionarDado(1 , dado2);    }//GEN-LAST:event_clickDado2
+
+    private void clickDado3(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado3
+        seleccionarDado(2 , dado3);
+    }//GEN-LAST:event_clickDado3
+
+    private void clickDado4(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado4
+        seleccionarDado(3 , dado4);
+    }//GEN-LAST:event_clickDado4
+
+    private void clickDado5(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado5
+        seleccionarDado(4 , dado5);
+    }//GEN-LAST:event_clickDado5
+
+    private void clickDado6(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado6
+        seleccionarDado(5 , dado6);
+    }//GEN-LAST:event_clickDado6
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
