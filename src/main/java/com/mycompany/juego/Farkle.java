@@ -120,7 +120,7 @@ public class Farkle {
     public Jugador getGanador() {
         return jugadores[turno];
     }
-
+    //salta el turno
     public void avanzarTurno() {
         turno = (turno + 1) % jugadores.length;
     }
