@@ -116,6 +116,17 @@ public class VentanaJuego extends javax.swing.JFrame {
       {
           dadoLabel.setBorder(null);//Se quita el borde cuando no se utiliza
       }
+      
+  }
+  
+  private void quitarBordes()
+  {
+     dado1.setBorder(null);
+     dado2.setBorder(null);
+     dado3.setBorder(null);
+     dado4.setBorder(null);
+     dado5.setBorder(null);
+     dado6.setBorder(null);
   }
   
     @SuppressWarnings("unchecked")
@@ -136,6 +147,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(900, 510));
@@ -202,7 +214,7 @@ public class VentanaJuego extends javax.swing.JFrame {
         jButton1.setText("Lanzar dados");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                lanzarDadosBoton(evt);
             }
         });
 
@@ -216,6 +228,8 @@ public class VentanaJuego extends javax.swing.JFrame {
         jLabel3.setText("jLabel3");
 
         jLabel4.setText("jLabel4");
+
+        jLabel5.setText("jLabel5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -245,7 +259,8 @@ public class VentanaJuego extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(dado5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(61, 61, 61)
-                                        .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(dado6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(38, 38, 38)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,7 +291,9 @@ public class VentanaJuego extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addComponent(jLabel7)
-                        .addGap(137, 137, 137)
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel5)
+                        .addGap(73, 73, 73)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(dado1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dado3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -315,11 +332,12 @@ public class VentanaJuego extends javax.swing.JFrame {
        seleccionarDado(0 , dado1);
     }//GEN-LAST:event_clickDado1
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void lanzarDadosBoton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lanzarDadosBoton
 
         juego.lanzarDados();//Se lanzan los dados y en el metodo lanzarDados() se guardan los valores.
         actualizarImagenesDados(); //Aqui las imagenes cambian cuando se presiona el boton
-    }//GEN-LAST:event_jButton1ActionPerformed
+        quitarBordes(); //Quitar los bordes en caso de que esten seleccionados
+    }//GEN-LAST:event_lanzarDadosBoton
 
     private void clickDado2(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDado2
         seleccionarDado(1 , dado2);    }//GEN-LAST:event_clickDado2
@@ -354,6 +372,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel puntos;
     // End of variables declaration//GEN-END:variables
