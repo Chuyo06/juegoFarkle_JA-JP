@@ -340,7 +340,7 @@ public class VentanaJuego extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "selecciona al menos un dado");
             return;
         }
-
+        //validar turno
         boolean turnoValido = juego.jugarTurno(seleccionados);
         if (!turnoValido) {
             JOptionPane.showMessageDialog(this, "farkle, perdiste los puntos de esta ronda");

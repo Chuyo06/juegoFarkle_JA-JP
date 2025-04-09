@@ -34,7 +34,7 @@ public class Jugador {
     public void agregarPuntos(int puntos) {
         puntajeTotal += puntos;
     }
-
+    //push commit
     public void reiniciarPuntos() {
         puntajeTotal = 0;
     }

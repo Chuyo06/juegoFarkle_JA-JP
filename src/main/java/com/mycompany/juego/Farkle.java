@@ -112,7 +112,7 @@ public class Farkle {
             return true;
         }
     }
-
+    //declarar los puntos con los que se gana el juego
     public boolean haGanado() {
         return jugadores[turno].getPuntos() >= 10000;
     }
