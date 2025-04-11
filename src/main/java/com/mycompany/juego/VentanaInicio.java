@@ -22,11 +22,13 @@ public class VentanaInicio extends javax.swing.JFrame {
     
     public VentanaInicio() {
         initComponents();
-         getContentPane().setBackground(new Color(232, 248, 245)); // color blanco de fondo
+        
+        setSize(540 , 350);
+         getContentPane().setBackground(new Color(104, 241, 112)); // color blanco de fondo
          
          // Asignar un tamaño fijo al JLabel si no se usa diseño automático
-    jLabel1.setSize(300, 150); // o el tamaño que quieras
-
+           jLabel1.setSize(300, 150); // o el tamaño que quieras
+            
     // Cargar y escalar la imagen
     ImageIcon originalIcon = new ImageIcon(getClass().getResource("/logo/logo_Farkle.png"));
     Image imagenEscalada = originalIcon.getImage().getScaledInstance(
@@ -53,7 +55,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("INICIO");
         setBackground(new java.awt.Color(153, 255, 153));
-        setPreferredSize(new java.awt.Dimension(550, 450));
         setResizable(false);
 
         boton2J.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -161,8 +162,15 @@ public class VentanaInicio extends javax.swing.JFrame {
        //Se crea un vector con el numero de jugadores elegido.
         jugadores = new Jugador[numeroJugadores]; 
         for (int i = 0; i < numeroJugadores; i++) {
+            
+            String nombre ;
+            do {
             //Muestra un panel en el cual se ingresaran los nombres de los jugadores.
-            String nombre = JOptionPane.showInputDialog("Nombre del jugador " + (i + 1) + ":");
+             nombre = JOptionPane.showInputDialog("Nombre del jugador " + (i + 1) + " (No dejar vacio)" + ":");
+             
+             if(nombre == null) System.exit(0); //no dejar seguir
+            }while(nombre == null || nombre.isEmpty()); //en caso de estar vacio
+            
             jugadores[i] = new Jugador(nombre);
         }
         

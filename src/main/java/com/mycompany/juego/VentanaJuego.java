@@ -6,12 +6,17 @@ package com.mycompany.juego;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -22,13 +27,17 @@ public class VentanaJuego extends javax.swing.JFrame {
     private Farkle juego;
     private VentanaInicio ventanaInicio;
     private boolean[] dadosSeleccionados = new boolean[6]; //Para concer cual dado se esta seleccionando
+    private boolean[] dadosUsadosEnRonda = new boolean[6];
     private JLabel[] etiquetasPuntaje;
-    //private List<Integer> valoresDadosSeleccionados = new ArrayList<>(); //Aqui se guardan los valores de los dados que se seleccionaron.
+    private boolean turnoActivo = false;
+    private JLabel lblAvisos = new JLabel("Inicia lanzando los dados :) " ,SwingConstants.CENTER);
 
     //Constructor que recibe la ventana de Inicio para que siga de esa
     public VentanaJuego(VentanaInicio ventanaInicio) {
         initComponents();
-
+         setTitle("Farkle - Juego de Domino");
+         setSize(900 , 580);
+        
         this.ventanaInicio = ventanaInicio; // Asignar la instancia recibida
         juego = new Farkle(ventanaInicio.getJugadores());
         Jugador[] jugadores = juego.getJugadores();
@@ -37,11 +46,84 @@ public class VentanaJuego extends javax.swing.JFrame {
         JLabel[] jlabels = {jLabel1, jLabel2, jLabel3, jLabel4};
 
         for (int i = 0; i < jugadores.length; i++) {
+            jlabels[i].setFont(new Font("Segoe UI Black" , Font.PLAIN ,14)) ;
             etiquetasPuntaje[i] = jlabels[i];
-            etiquetasPuntaje[i].setText(jugadores[i].getNombre() + ": 0 pts");
+            etiquetasPuntaje[i].setText(jugadores[i].getNombre() + ": 0 p");
+            
         }
-
-        getContentPane().setBackground(new Color(232, 248, 245)); // color de fondo
+        
+        //Label que dice la palabra "Puntaje"
+         JLabel lblPuntaje = new JLabel("PUNTAJES", SwingConstants.CENTER);
+         lblPuntaje.setFont(new Font("Segoe UI Black", Font.PLAIN, 25));
+         lblPuntaje.setBounds(620, 400, 200, 80); 
+         add(lblPuntaje);
+        
+         
+        //Label del jugador en turno
+        jLabel7.setFont(new Font("Segoe UI Black" , Font.PLAIN ,30));
+        jLabel7.setText("Turno del jugador: "+juego.getJugadorActual());
+        
+        //Label que contiene el texto con los avisos
+         
+         lblAvisos.setFont(new Font("Segoe UI Black", Font.PLAIN, 20));
+         lblAvisos.setBounds(10, 120, 500, 100); 
+         add(lblAvisos);
+        
+        //Labels que se van a mostrar dependiendo el numero de jugadores
+        if(juego.getJugadores().length == 2)
+        {
+        //labels de los puntos de los jugadores
+         jLabel1.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel1.setBounds(600, 450, 200, 80); 
+         getContentPane().add(jLabel1);
+         
+         jLabel2.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel2.setBounds(600, 500, 200, 80); 
+         getContentPane().add(jLabel2);
+         
+         jLabel3.setVisible(false);
+         jLabel4.setVisible(false);
+        }else if(juego.getJugadores().length == 3)
+        {
+             //labels de los puntos de los jugadores
+         jLabel1.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel1.setBounds(600, 450, 200, 80); 
+         getContentPane().add(jLabel1);
+         
+         jLabel2.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel2.setBounds(600, 500, 200, 80); 
+         getContentPane().add(jLabel2);
+         
+         jLabel3.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel3.setBounds(750, 450, 200, 80); 
+         getContentPane().add(jLabel3);
+         
+         jLabel4.setVisible(false);
+        }
+         else
+        {
+              //labels de los puntos de los jugadores
+         jLabel1.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel1.setBounds(600, 450, 200, 80); 
+         getContentPane().add(jLabel1);
+         
+         jLabel2.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel2.setBounds(600, 500, 200, 80); 
+         getContentPane().add(jLabel2);
+         
+         jLabel3.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel3.setBounds(750, 450, 200, 80); 
+         getContentPane().add(jLabel3);
+         
+         
+         jLabel4.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+         jLabel4.setBounds(750, 500, 200, 80); 
+         getContentPane().add(jLabel4);
+         
+        }
+         
+   
+        getContentPane().setBackground(new Color(104, 241, 112)); // color de fondo
         juego = new Farkle(ventanaInicio.getJugadores());
 
         redimensionarImgPuntos();
@@ -112,6 +194,12 @@ public class VentanaJuego extends javax.swing.JFrame {
     //Metodo que va ayudarnos a identificar que dado esta seleccionado
     private void seleccionarDado(int numDado, JLabel dadoLabel) {
 
+         // Si el dado ya fue usado en esta ronda, no permitir cambios
+        if (dadosUsadosEnRonda[numDado]) {
+            return; // No hacer nada si el dado ya fue usado
+        }
+        
+    
         // con esta comparacion cambias el estado de la seleccion
         dadosSeleccionados[numDado] = !dadosSeleccionados[numDado];
 
@@ -218,6 +306,8 @@ public class VentanaJuego extends javax.swing.JFrame {
             }
         });
         jLabel1.setText("jLabel1");
+	jLabel1.setFont(new Font("Segoe UI Black", Font.PLAIN, 14));
+        jLabel1.setBounds(600, 500, 100, 100);
 
         jLabel2.setText("jLabel2");
 
@@ -320,57 +410,226 @@ public class VentanaJuego extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) { 
+        
 
-        juego.lanzarDados();//Se lanzan los dados y en el metodo lanzarDados() se guardan los valores.
-        actualizarImagenesDados(); //Aqui las imagenes cambian cuando se presiona el boton
-    }
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+            //lambda que verifica su hay dados seleccionados que no se ha usado.
+            //IntStream,range() , genera un flujo de enteros 0 - el tamnio del vector de los dados seleccionados
+            boolean hayDadosSeleccionados = IntStream.range(0, dadosSeleccionados.length)
+        .anyMatch(i -> dadosSeleccionados[i] && !dadosUsadosEnRonda[i]);
+        
+    
+    
+        
+        
+    if (hayDadosSeleccionados) {
+        
+        //Verificar si hay combinaciones disponibles
         List<Integer> valores = juego.getValoresDados();
         List<Integer> seleccionados = new ArrayList<>();
-
-        for (int i = 0; i < dadosSeleccionados.length; i++) {
-            if (dadosSeleccionados[i]) {
+        
+        IntStream.range(0, dadosSeleccionados.length)
+            .filter(i -> dadosSeleccionados[i] && !dadosUsadosEnRonda[i])
+            .forEach(i -> {
                 seleccionados.add(valores.get(i));
+                dadosUsadosEnRonda[i] = true;
+            });
+        
+         boolean combinacionValida = !juego.esFarkle(seleccionados);
+         
+         if(combinacionValida)
+         {
+             int puntosObtenidos = juego.calcularPuntaje(seleccionados);
+             juego.jugarTurno(seleccionados);
+             
+              lblAvisos.setText("Puntos acumulados en esta ronda: " + juego.getPuntosRonda());
+              
+    
+                juego.lanzarDadosNoSeleccionados(dadosSeleccionados);
+                
+                actualizarImagenesDados();
+                
+            //Aqui se verifica si hay alguna combinacion en los dados restantes
+            List<Integer> dadosDisponibles = IntStream.range(0, juego.getValoresDados().size())
+                .filter(i -> !dadosUsadosEnRonda[i])
+                .mapToObj(i -> juego.getValoresDados().get(i))
+                .collect(Collectors.toList());
+            
+            //Verifica si hay alguna combinacion valida con esos dados
+            boolean esFarkle = true;
+            
+            if(!dadosDisponibles.isEmpty())
+            {
+                esFarkle = juego.esFarkle(dadosDisponibles);
             }
+            else
+            {
+                //Si todos los dados estan selccionados no hay farkle
+                esFarkle = false;
+            }
+            
+            if(esFarkle)
+            {
+                 // Se pierden todos los puntos de la ronda
+                JOptionPane.showMessageDialog(this, "¡¡¡¡¡FARKLE!!!!!!");
+                lblAvisos.setText("Perdiste los puntos de esta ronda");
+                
+                juego.setPuntosRonda(0);
+                
+                juego.avanzarTurno();
+                
+                // Verificar si hay un ganador si es necesario.
+                if (juego.haGanado()) {
+                    JOptionPane.showMessageDialog(this, "¡" + juego.getGanador().getNombre() + 
+                        " ha ganado con " + juego.getGanador().getPuntos() + " puntos!");
+                    dispose();
+                    ventanaInicio.setVisible(true);
+                    return;
+                }
+                
+                jLabel7.setText("Turno del jugador: " + juego.getJugadorActual());
+                
+                // Reiniciar selecciones
+                IntStream.range(0, dadosSeleccionados.length).forEach(i -> {
+                    dadosSeleccionados[i] = false;
+                    dadosUsadosEnRonda[i] = false;
+                });
+                
+                 // Quitar bordes
+                Stream.of(dado1, dado2, dado3, dado4, dado5, dado6)
+                    .forEach(dado -> dado.setBorder(null));
+                
+                redimensionarImgDados();
+            }
+            else
+            {
+                lblAvisos.setText("Puntos acumulados: " + juego.getPuntosRonda());
+            }
+            
+        }else
+         {
+             lblAvisos.setText("Combinación no válida.");
+            // Desmarcar los dados que se intentaron seleccionar
+            
+            IntStream.range(0, dadosSeleccionados.length)
+                .filter(i -> dadosSeleccionados[i] && !dadosUsadosEnRonda[i])
+                .forEach(i -> {
+                    dadosSeleccionados[i] = false;
+                    JLabel[] dados = {dado1, dado2, dado3, dado4, dado5, dado6};
+                    dados[i].setBorder(null);
+                });
+            return;
         }
+    }
+    else {
+ // Es el inicio de la ronda, lanzar todos los dados
+        juego.lanzarDados();
+        actualizarImagenesDados();
+        
+        // Reiniciar el seguimiento de dados usados al inicio de un nuevo lanzamiento completo
+        for (int i = 0; i < dadosUsadosEnRonda.length; i++) {
+            dadosUsadosEnRonda[i] = false;
+        }
+        
+        // Verificar si hay al menos una combinación válida en los dados lanzados
+        List<Integer> nuevosDados = juego.getValoresDados();
+        boolean hayFarkle = juego.esFarkle(nuevosDados);
+        
+        if (hayFarkle) {
+            // ¡FARKLE! en el primer lanzamiento
+            JOptionPane.showMessageDialog(this, "¡¡¡¡¡FARKLE!!!!!!");
+            lblAvisos.setText("Pierdes tus puntos. Pasa turno.");
+            
+            // Avanzar turno
+            juego.avanzarTurno();
+            
+            // Actualizar etiqueta del jugador actual
+            jLabel7.setText("Turno del jugador: " + juego.getJugadorActual());
+            
+            // Reiniciar los dados
+            redimensionarImgDados();
+        } else {
+            lblAvisos.setText("Selecciona dados para obtener puntos.");
+        }
+       }
+    }  
 
-        if (seleccionados.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "selecciona al menos un dado");
+
+    
+    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+
+     // Verificar si hay dados seleccionados que no han sido usados en esta ronda
+    List<Integer> seleccionadosParaSumar = new ArrayList<>();
+    List<Integer> valores = juego.getValoresDados();
+    boolean haySeleccionados = false;
+    
+    for (int i = 0; i < dadosSeleccionados.length; i++) {
+        if (dadosSeleccionados[i] && !dadosUsadosEnRonda[i]) {
+            seleccionadosParaSumar.add(valores.get(i));
+            dadosUsadosEnRonda[i] = true;
+            haySeleccionados = true;
+        }
+    }
+    
+    // Si hay dados seleccionados, calcular y sumar sus puntos
+    if (haySeleccionados) {
+        boolean combinacionValida = !juego.esFarkle(seleccionadosParaSumar);
+        
+        if (combinacionValida) {
+            // Esta línea es crucial - juega el turno con los dados seleccionados
+            juego.jugarTurno(seleccionadosParaSumar);
+        } else {
+            lblAvisos.setText("Combinación no válida.");
+            return;
+        }
+    }
+        
+    // Ahora verificamos si hay puntos acumulados en la ronda para guardar
+    if (juego.getPuntosRonda() > 0) {
+        // Guardar los puntos acumulados
+        juego.guardarPuntos();
+            
+        // Actualizar visualmente los puntos
+        Jugador[] jugadores = juego.getJugadores();
+        IntStream.range(0, jugadores.length)
+            .forEach(i -> etiquetasPuntaje[i].setText(
+                jugadores[i].getNombre() + ": " + jugadores[i].getPuntos() + " pts"));
+
+        // Verificar si hay un ganador
+        if (juego.haGanado()) {
+            JOptionPane.showMessageDialog(this, "¡" + juego.getGanador().getNombre() + 
+                " ha ganado con " + juego.getGanador().getPuntos() + " puntos!");
+            dispose();
+            ventanaInicio.setVisible(true);
             return;
         }
 
-        boolean turnoValido = juego.jugarTurno(seleccionados);
-        if (!turnoValido) {
-            JOptionPane.showMessageDialog(this, "farkle, perdiste los puntos de esta ronda");
-            for (int i = 0; i < dadosSeleccionados.length; i++) {
-                dadosSeleccionados[i] = false;
-            }
-            redimensionarImgDados();
-            juego.avanzarTurno();
-        } else {
-            JOptionPane.showMessageDialog(this, "puntos actuales de esta ronda: " + juego.getPuntosRonda());
-            juego.guardarPuntos();
-            Jugador[] jugadores = juego.getJugadores();
-            for (int i = 0; i < jugadores.length; i++) {
-                etiquetasPuntaje[i].setText(jugadores[i].getNombre() + ": " + jugadores[i].getPuntos() + " pts");
-            }
-            juego.avanzarTurno();
-        }
-        //verifica el ganador
-        if (juego.haGanado()){
-            JOptionPane.showMessageDialog(this, "!" + juego.getGanador().getNombre() + " ha ganado " + juego.getGanador().getPuntos() + " puntos");
-            System.exit(0);
-        } else {
-            JOptionPane.showMessageDialog(this, "Turno de: " + juego.getJugadorActual());
+        
+        juego.avanzarTurno();
+        
+        // Actualizar etiqueta del jugador actual
+        jLabel7.setText("Turno del jugador: " + juego.getJugadorActual());
+        lblAvisos.setText("Puntos sumados. Turno del siguiente jugador");
+
+        // Reiniciar dados seleccionados y usados
+        for (int i = 0; i < dadosSeleccionados.length; i++) {
+            dadosSeleccionados[i] = false;
+            dadosUsadosEnRonda[i] = false;
         }
 
-        for (JLabel dado : new JLabel[]{dado1, dado2, dado3, dado4, dado5, dado6}) {
-            dado.setBorder(null);
-        }
+        // Quitar bordes
+        Stream.of(dado1, dado2, dado3, dado4, dado5, dado6)
+            .forEach(dado -> dado.setBorder(null));
+
+        // Reiniciar los dados para el nuevo jugador
+        redimensionarImgDados();
+    } else {
+        lblAvisos.setText("¡No hay puntos para guardar!");
     }
-
+    
+    }
+    
     private void clickDado1(java.awt.event.MouseEvent evt) {
         seleccionarDado(0, dado1);
     }
@@ -410,6 +669,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8; 
 
 }
 

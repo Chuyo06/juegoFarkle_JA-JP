@@ -35,6 +35,19 @@ public class Farkle {
         ultimosValores.add(dado.getValor());
     }
     }
+    
+public void lanzarDadosNoSeleccionados(boolean[] dadosSeleccionados) {
+    
+    
+    for (int i = 0; i < dadosSeleccionados.length; i++) {
+        if (!dadosSeleccionados[i]) {
+            // Solo relanzar los dados no seleccionados
+            dados[i].lanzar();
+            ultimosValores.set(i, dados[i].getValor());
+        }
+    }
+}
+    
 
     public List<Integer> getValoresDados() {
         return ultimosValores;
@@ -101,6 +114,10 @@ public class Farkle {
     public int getPuntosRonda() {
         return puntosRonda;
     }
+    
+    public void setPuntosRonda(int puntosRonda) {
+        this.puntosRonda = puntosRonda ;
+    }
 
     public boolean jugarTurno(List<Integer> seleccionados) {
         int puntos = calcularPuntaje(seleccionados);
@@ -112,9 +129,9 @@ public class Farkle {
             return true;
         }
     }
-    //declarar los puntos con los que se gana el juego
+    //Declarar los puntos con los que se gana el juego
     public boolean haGanado() {
-        return jugadores[turno].getPuntos() >= 10000;
+        return jugadores[turno].getPuntos() >= 10000;//Con 10000 puntos se termina el juego
     }
 
     public Jugador getGanador() {
